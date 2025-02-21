@@ -1,8 +1,8 @@
 import { useState } from "react";
-import SignInForm from "./SignIn/SignInForm";
-import SignUpForm from "./SignUp/SignUpForm";
-import SwitchPrompt from "./SwitchPrompt";
-import ToggleSwitchButton from "../shared/ToggleSwitchButton";
+import SwitchPrompt from "../components/SwitchPrompt";
+import ToggleSwitchButton from "../components/shared/ToggleSwitchButton";
+import SignUpForm from "../components/SignUp/SignUpForm";
+import SignInForm from "../components/SignIn/SignInForm";
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
