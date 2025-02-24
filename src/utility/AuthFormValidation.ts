@@ -1,9 +1,7 @@
-import { AuthFormFields } from "../types/AuthFormTypes";
-
 export const authFieldValidation = (
   name: string,
   value: string,
-  formData: AuthFormFields
+  password?: string
 ): string | null => {
   let error: string | null = null;
 
@@ -21,7 +19,7 @@ export const authFieldValidation = (
       break;
     case "confirmPassword":
       if (emptyField) error = "Confirm Password is required";
-      else if (value !== formData.password) error = "Passwords do not match";
+      else if (value !== password) error = "Passwords do not match";
       break;
     case "name":
       if (emptyField) error = "Full Name is required";

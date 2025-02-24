@@ -6,42 +6,54 @@ const useAuthForm = (defaultValues: AuthFormFields) => {
   const [formData, setFormData] = useState<AuthFormFields>(defaultValues);
   const [errors, setErrors] = useState<Partial<AuthFormFields>>({});
 
-  const validateField = (name: string, value: string) => {
-    const error = authFieldValidation(name, value, formData);
+  const validateField = (name: keyof AuthFormFields, value: string) => {
+    const password = name === "confirmPassword" ? formData.password : undefined;
+    const error = authFieldValidation(name, value, password);
 
     setErrors((prevErrors) => {
+      const newErrors = { ...prevErrors };
       if (error) {
-        return { ...prevErrors, [name]: error };
+        newErrors[name] = error;
       } else {
-        const newErrors = { ...prevErrors };
-        delete newErrors[name as keyof AuthFormFields];
-        return newErrors;
+        delete newErrors[name];
       }
+      return newErrors;
     });
 
     return error;
   };
 
   const validateForm = () => {
-    let hasErrors = false;
     const newErrors: Partial<AuthFormFields> = {};
-
     Object.entries(formData).forEach(([key, value]) => {
-      const error = validateField(key, value);
-      if (error) {
-        hasErrors = true;
-        newErrors[key as keyof AuthFormFields] = error;
-      }
+      const password =
+        key === "confirmPassword" ? formData.password : undefined;
+
+      const error = authFieldValidation(
+        key as keyof AuthFormFields,
+        value,
+        password
+      );
+      if (error) newErrors[key as keyof AuthFormFields] = error;
     });
 
-    if (hasErrors) setErrors(newErrors);
-    return !hasErrors;
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
-    validateField(name, value);
+    validateField(name as keyof AuthFormFields, value);
+  };
+
+  const resetForm = () => {
+    setFormData(defaultValues);
+    setErrors({});
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -49,11 +61,10 @@ const useAuthForm = (defaultValues: AuthFormFields) => {
     if (!validateForm()) return;
 
     console.log("Form submitted successfully:", formData);
-
-    setFormData(defaultValues);
+    resetForm();
   };
 
-  return { formData, handleChange, handleSubmit, errors };
+  return { formData, handleChange, handleSubmit, resetForm, errors };
 };
 
 export default useAuthForm;
