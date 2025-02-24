@@ -1,5 +1,5 @@
 import { useState } from "react";
-import SwitchPrompt from "../components/SwitchPrompt";
+import SwitchPrompt from "../components/shared/SwitchPrompt";
 import ToggleSwitchButton from "../components/shared/ToggleSwitchButton";
 import SignUpForm from "../components/SignUp/SignUpForm";
 import SignInForm from "../components/SignIn/SignInForm";
@@ -23,7 +23,13 @@ const AuthForm = () => {
 
         {isLogin ? <SignInForm /> : <SignUpForm />}
 
-        <SwitchPrompt isLogin={isLogin} setIsLogin={setIsLogin} />
+        <SwitchPrompt
+          condition={isLogin}
+          onSwitch={() => setIsLogin(!isLogin)}
+          trueText="Don't have an account?"
+          falseText="Already have an account?"
+          buttonLabel={isLogin ? "Sign Up" : "Sign In"}
+        />
       </div>
     </div>
   );
