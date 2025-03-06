@@ -1,35 +1,32 @@
 import { useState } from "react";
 import { AuthFormFields } from "../types/AuthFormTypes";
-import { authFieldValidation } from "../utility/AuthFormValidation";
+import { validateSignUpFields } from "../utility/AuthValidation";
 
-const useAuthForm = (defaultValues: AuthFormFields) => {
+const useSignUpForm = (defaultValues: AuthFormFields) => {
   const [formData, setFormData] = useState<AuthFormFields>(defaultValues);
   const [errors, setErrors] = useState<Partial<AuthFormFields>>({});
 
   const validateField = (name: keyof AuthFormFields, value: string) => {
     const password = name === "confirmPassword" ? formData.password : undefined;
-    const error = authFieldValidation(name, value, password);
+    const error = validateSignUpFields(name, value, password);
 
     setErrors((prevErrors) => {
       const newErrors = { ...prevErrors };
-      if (error) {
-        newErrors[name] = error;
-      } else {
-        delete newErrors[name];
-      }
+      if (error) newErrors[name] = error;
+      else delete newErrors[name];
       return newErrors;
     });
 
     return error;
   };
 
-  const validateForm = () => {
+  const validateForm = (): boolean => {
     const newErrors: Partial<AuthFormFields> = {};
+
     Object.entries(formData).forEach(([key, value]) => {
       const password =
         key === "confirmPassword" ? formData.password : undefined;
-
-      const error = authFieldValidation(
+      const error = validateSignUpFields(
         key as keyof AuthFormFields,
         value,
         password
@@ -60,11 +57,11 @@ const useAuthForm = (defaultValues: AuthFormFields) => {
     e.preventDefault();
     if (!validateForm()) return;
 
-    console.log("Form submitted successfully:", formData);
+    console.log("Sign-up successful:", formData);
     resetForm();
   };
 
   return { formData, handleChange, handleSubmit, resetForm, errors };
 };
 
-export default useAuthForm;
+export default useSignUpForm;

@@ -1,5 +1,6 @@
-import useAuthForm from "../../hooks/useAuthForm";
-import TextField from "../shared/TextField";
+import useSignInForm from "../../hooks/useSignInForm";
+import PasswordField from "../common/PasswordField";
+import TextField from "../common/TextField";
 
 const defaultValues = {
   email: "",
@@ -8,7 +9,7 @@ const defaultValues = {
 
 const SignInForm = () => {
   const { formData, handleChange, handleSubmit, errors } =
-    useAuthForm(defaultValues);
+    useSignInForm(defaultValues);
 
   return (
     <form onSubmit={handleSubmit} className="auth-form">
@@ -21,8 +22,7 @@ const SignInForm = () => {
       />
       {errors.email && <p className="error-message">*{errors.email}</p>}
 
-      <TextField
-        type="password"
+      <PasswordField
         name="password"
         placeholder="Password"
         value={formData.password}

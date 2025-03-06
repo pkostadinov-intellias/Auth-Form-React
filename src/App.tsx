@@ -1,11 +1,7 @@
-import AuthForm from "./views/AuthForm";
+import AuthPage from "./views/AuthPage";
 
 function App() {
-  return (
-    <>
-      <AuthForm />
-    </>
-  );
+  return <AuthPage />;
 }
 
 export default App;

@@ -1,5 +1,6 @@
-import useAuthForm from "../../hooks/useAuthForm";
-import TextField from "../shared/TextField";
+import useSignUpForm from "../../hooks/useSignUpForm";
+import PasswordField from "../common/PasswordField";
+import TextField from "../common/TextField";
 
 const defaultValues = {
   name: "",
@@ -10,7 +11,7 @@ const defaultValues = {
 
 const SignUpForm = () => {
   const { formData, handleChange, handleSubmit, errors } =
-    useAuthForm(defaultValues);
+    useSignUpForm(defaultValues);
 
   return (
     <form onSubmit={handleSubmit} className="auth-form">
@@ -32,8 +33,7 @@ const SignUpForm = () => {
       />
       {errors.email && <p className="error-message">*{errors.email}</p>}
 
-      <TextField
-        type="password"
+      <PasswordField
         name="password"
         placeholder="Password"
         value={formData.password}
@@ -41,8 +41,7 @@ const SignUpForm = () => {
       />
       {errors.password && <p className="error-message">*{errors.password}</p>}
 
-      <TextField
-        type="password"
+      <PasswordField
         name="confirmPassword"
         placeholder="Confirm Password"
         value={formData.confirmPassword!}
